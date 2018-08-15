@@ -121,4 +121,4 @@ app.post('/pushVote',function (req,res) {
     res.redirect('/vote/'+req.session.c+'/'+req.session.r)
 
 })
-app.listen(3000)
+app.listen(80,'0.0.0.0')
