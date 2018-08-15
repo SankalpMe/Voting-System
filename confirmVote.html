@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <meta charset="UTF-8">
+    <title>Hello!</title>
+    <style>
+        body,html{
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+</head>
+<body ng-app="App">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+
+
+<div layout="row" layout-fill style="height: 100%;" layout-align="center center" ng-controller="homeC as hc">
+
+    <md-whiteframe class="md-whiteframe-1dp" layout-align="center center" layout-padding flex="40">
+        <form layout="column" action="/poll" method="post">
+            <h1>Hello</h1>
+            <h5 style="margin-top: -20px;color: #73767d;">Confirm your details.</h5>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Name:</label>
+                <input ng-model="hc.name" disabled>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs style="margin-top: -20px">
+                <label>Roll Number:</label>
+                <input ng-model="hc.rno" disabled>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-xs style="margin-top: -20px">
+                <label>Enrollment Number:</label>
+                <input ng-model="hc.eno" disabled>
+            </md-input-container>
+            <div layout="row" layout="fill">
+                <md-button flex="60" class="md-raised md-accent" type="submit" name="submit" value="{{hc.rno}}"><strong>Confirm</strong></md-button>
+                <md-button flex="40" href="{{hc.newU}}">Absent</md-button>
+            </div>
+
+        </form>
+    </md-whiteframe>
+
+</div>
+<!-- Your application bootstrap  -->
+<script type="text/javascript">
+    /**
+     * You must include the dependency on 'ngMaterial'
+     */
+    angular.module('App', ['ngMaterial', 'ngMessages']).controller('homeC', function($http) {
+       /*
+        $http.get("welcome.htm")
+            .then(function(response) {
+                $scope.myWelcome = response.data;
+            });
+           */
+
+        var hc = this;
+        hc.loadData = function () {
+           qcw = window.location.pathname.substr(5)
+            bm = qcw.split('/')
+            bm.splice(0,1)
+            hc.newU = "/vote/" + bm[0] +"/"+ (parseInt(bm[1])+1)
+
+            $http.get("../../../data"+qcw)
+                .then(function(response) {
+                    hc.name =  response.data.name;
+                    hc.rno = response.data.rno
+                    hc.eno = response.data.eno
+                });
+        }
+        hc.loadData()
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <meta charset="UTF-8">
+    <title>Hello!</title>
+    <style>
+        body,html{
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        .pimg{
+
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .pimg1{
+            background-image: url("http://localhost:3000/hwg");
+        }
+        .select{
+            border: 2px dashed black;
+            background-color: rgba(34,32,35,0.07);
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+</head>
+<body ng-app="App">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+
+
+<div layout="row" layout-fill style="height: 100%;" layout-align="center center" ng-controller="homeC as hc">
+
+    <div  layout-align="center center" layout-padding flex="60" >
+        <form layout="column" action="../pushVote" method="post">
+            <h1>Hello</h1>
+            <h5 style="margin-top: -20px;color: #73767d;">Choose Your Candidate!</h5>
+            <div layout="column" ng-repeat="post in hc.candiates">
+            <h3 style="margin-left: 5px">{{post.post}}</h3>
+            <div layout="row">
+                <md-card flex="25" ng-repeat="boy in post.members" ng-class="{'select':post.cr == boy.id}">
+                    <md-card-title style="text-align: center">
+                        <md-card-title-text>
+                            <span class="md-headline">{{boy.name}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content layout="column" >
+                        <div class="md-media-lg card-media pimg" style="height: 150px;" ng-style='{
+            "background-image":"url(\""+boy.img+"\")"
+        }'></div>
+
+                        <md-card-actions layout="column">
+                            <md-button class="md-raised md-primary" ng-click="post.cr = boy.id">
+                                Vote
+                            </md-button>
+                        </md-card-actions>
+                    </md-card-content>
+                </md-card>
+            </div>
+
+            </div>
+            <md-button class="md-raised md-primary" style="margin-top: 40px;margin-bottom: 50px;width: 50%;" type="submit"><strong>SUBMIT</strong></md-button>
+            <div style="display: none" >
+                <input name="hboy" ng-model="hc.candiates[0].cr">
+                <input name="hgirl" ng-model="hc.candiates[1].cr">
+                <input name="vhboy" ng-model="hc.candiates[2].cr">
+                <input name="vhgirl" ng-model="hc.candiates[3].cr">
+                <input name="rno" ng-model="hc.id">
+
+            </div>
+        </form>
+    </div>
+
+</div>
+<!-- Your application bootstrap  -->
+<script type="text/javascript">
+    /**
+     * You must include the dependency on 'ngMaterial'
+     */
+    angular.module('App', ['ngMaterial', 'ngMessages']).controller('homeC', function() {
+        var hc = this;
+        cms = window.location.pathname.split('/')
+        cms = cms[2]
+        hc.id = cms;
+        hc.candiates = [
+            {
+                'post':'Head Boy',cr : 0,members : [
+                    {"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'1'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'2'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'3'},{"name":"Prenit Chawla","img":"http://localhost:3000/twg",'id':'4'}
+                    ]
+            },
+            {
+                'post':'Head Girl',cr : 0,members : [
+                    {"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'1'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'2'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'3'},{"name":"Prenit Chawla","img":"http://localhost:3000/twg",'id':'4'}
+                ]
+            },
+
+            {
+                'post':'Vice Head Boy',cr : 0,members : [
+                    {"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'1'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'2'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'3'},{"name":"Prenit Chawla","img":"http://localhost:3000/twg",'id':'4'}
+                ]
+            },
+
+            {
+                'post':'Vice Head Girl',cr : 0,members : [
+                    {"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'1'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'2'},{"name":"Ajay Shinde","img":"http://localhost:3000/hwg",'id':'3'},{"name":"Prenit Chawla","img":"http://localhost:3000/twg",'id':'4'}
+                ]
+            }
+
+            ]
+
+    });
+</script>
+
+</body>
+</html>

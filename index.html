@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <meta charset="UTF-8">
+    <title>Hello!</title>
+    <style>
+        body,html{
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+</head>
+<body ng-app="App">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+<!-- Angular Material Library -->
+<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+
+
+<div layout="row" layout-fill style="height: 100%;" layout-align="center center" ng-controller="homeC as hc">
+
+    <md-whiteframe class="md-whiteframe-1dp" layout-align="center center" layout-padding flex="40">
+        <form layout="column" action="./class" method="post">
+            <h1>Hello</h1>
+        <md-input-container >
+            <label>Class</label>
+            <md-select ng-model="class" name="class">
+                <md-option name="class"  ng-repeat="c in hc.classes" value="{{c}}">{{c}}</md-option>
+            </md-select>
+        </md-input-container>
+            <md-input-container >
+                <label>Section</label>
+                <md-select ng-model="section" name="section">
+                    <md-option name="section" ng-repeat="sec in hc.sections" value="{{sec[1]}}">{{sec[1]}}</md-option>
+                </md-select>
+            </md-input-container>
+            <md-button class="md-raised md-primary" type="submit"><strong>GO</strong></md-button>
+        </form>
+    </md-whiteframe>
+
+</div>
+<!-- Your application bootstrap  -->
+<script type="text/javascript">
+    /**
+     * You must include the dependency on 'ngMaterial'
+     */
+    angular.module('App', ['ngMaterial', 'ngMessages']).controller('homeC', function() {
+        var hc = this;
+        hc.classes = [6,7,8,9,10]
+        hc.sections = [[1,'A'],[2,'B'],[3,'C'],[4,'D'],[5,'E'],[6,'F']]
+    });
+</script>
+
+</body>
+</html>
