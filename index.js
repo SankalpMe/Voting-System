@@ -1,7 +1,7 @@
-const csv=require('csvtojson')
-var bodyParser = require('body-parser')
-const rh = require('./reshandler')
-const path = require('path')
+const csv = require('csvtojson');
+var bodyParser = require('body-parser');
+const rh = require('./reshandler');
+const path = require('path');
 var mysql = require('mysql');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -18,27 +18,31 @@ con.connect(function(err) {
 
     console.log("Connected!");
 });
-rh.reset()
+rh.reset();
 function loadCSV(loc,callback) {
-    dnd = false
-    table = []
+    dnd = false;
+    table = [];
     csv()
         .fromFile(loc)
         .on('done',(error)=>{
                 if(!dnd){
-                    callback([])
+                    callback([]);
                     dnd = true
                 }
         })
         .then((jsonObj)=>{
 
             for(var x =0;x < jsonObj.length;x++){
-                child = jsonObj[x]
-                nchild = {'name':child['Student Name'], 'rno' : child['Roll No'][''],'eno' :  child['Enrollment No']['']}
+                child = jsonObj[x];
+                nchild = {
+                    'name': child['Student Name'],
+                    'rno': child['Roll No'][''],
+                    'eno': child['Enrollment No']['']
+                };
                 table.push(nchild)
             }
             if(!dnd){
-            callback(table)
+                callback(table);
                 dnd = true}
         })
 }
@@ -51,8 +55,8 @@ loadCSV(function (tb) {
 
 })
 */
-const express = require('express')
-app = express()
+const express = require('express');
+app = express();
 app.use( bodyParser.json() );
 app.use(session({secret: "samkcmp"}));
 app.use(cookieParser());// to support JSON-encoded bodies
@@ -61,7 +65,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 app.get('/',function (req,res) {
     res.sendFile(path.join(process.cwd(),"/index.html"))
-})
+});
 app.post('/class',function (req,res) {
     loadCSV(getPath(req.body.class,req.body.section),function (data) {
         if(data.length === 0){
@@ -69,43 +73,43 @@ app.post('/class',function (req,res) {
         }else{
         res.redirect("/vote/6A/1")}
     })
-})
+});
 app.get('/vote/:class/:r',function (req,res) {
     loadCSV(getPath(req.params.class,''),function (data) {
         if(data.length < parseInt(req.params.r) ){
             res.redirect('/')
         }else {
-            req.session.c =  req.params.class
-            req.session.r =  parseInt(req.params.r)+1
+            req.session.c = req.params.class;
+            req.session.r = parseInt(req.params.r) + 1;
             //Sets name = express
             res.sendFile(path.join(process.cwd(), "/confirmVote.html"))
         }
         })
-})
+});
 app.get('/data/:class/:r',function (req,res) {
     loadCSV(getPath(req.params.class,''),function (data) {
         if(data.length !== 0)
-            res.send(data[ parseInt(req.params.r) - 1 ])
+            res.send(data[parseInt(req.params.r) - 1]);
         else
             res.send([])
     })
-})
+});
 app.post('/poll',function (req,res) {
     res.redirect('/choose/'+req.body.submit)
-})
-app.post('')
+});
+app.post('');
 app.get('/choose/:eno',function (req,res) {
     res.sendFile(path.join(process.cwd(),"/poll.html"))
-})
+});
 app.get('/twg',function (req,res) {
     res.sendFile(path.join(process.cwd(),"/t.jpg"))
-})
+});
 
 app.get('/hwg',function (req,res) {
     res.sendFile(path.join(process.cwd(),"/h.jpg"))
-})
+});
 app.post('/pushVote',function (req,res) {
-    console.log(req.body)
+    console.log(req.body);
 
     con.query("SELECT * FROM `voters`\n" +
         "WHERE `eno`='"+req.body.rno+"';", function (err, result) {
@@ -120,36 +124,36 @@ app.post('/pushVote',function (req,res) {
     });
     res.redirect('/vote/'+req.session.c+'/'+req.session.r)
 
-})
+});
 app.get('/result',function (req,res) {
     con.query("SELECT * FROM `voters`", function (err, result) {
-        var hboy = [0,0,0,0]
-        var hgirl = [0,0,0,0]
-        var vhboy = [0,0,0,0]
-        var vhgirl = [0,0,0,0]
+        var hboy = [0, 0, 0, 0];
+        var hgirl = [0, 0, 0, 0];
+        var vhboy = [0, 0, 0, 0];
+        var vhgirl = [0, 0, 0, 0];
             for(var x =0;x< result.length;x++){
-                cr = result[x].vote
+                cr = result[x].vote;
                 for(var y =0;y < cr.length;y++){
-                    let ind = parseInt(cr.charAt(y)+"") - 1
+                    let ind = parseInt(cr.charAt(y) + "") - 1;
 
                     switch (y) {
                         case 0:
-                            hboy[ind] = hboy[ind] + 1
+                            hboy[ind] = hboy[ind] + 1;
 
                             break;
                         case 1:
-                            hgirl[ind] = hgirl[ind] + 1
+                            hgirl[ind] = hgirl[ind] + 1;
                             break;
                         case 2:
-                            vhboy[ind] = vhboy[ind] + 1
+                            vhboy[ind] = vhboy[ind] + 1;
                             break;
                         case 3:
-                            vhgirl[ind] = vhgirl[ind] + 1
+                            vhgirl[ind] = vhgirl[ind] + 1;
                             break;
                     }
                 }
             }
             res.send({'b':hboy,'g':hgirl,'vb':vhboy,'vg':vhgirl})
     });
-})
-app.listen(80,'0.0.0.0')
+});
+app.listen(80, '0.0.0.0');
