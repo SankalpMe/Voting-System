@@ -121,4 +121,35 @@ app.post('/pushVote',function (req,res) {
     res.redirect('/vote/'+req.session.c+'/'+req.session.r)
 
 })
+app.get('/result',function (req,res) {
+    con.query("SELECT * FROM `voters`", function (err, result) {
+        var hboy = [0,0,0,0]
+        var hgirl = [0,0,0,0]
+        var vhboy = [0,0,0,0]
+        var vhgirl = [0,0,0,0]
+            for(var x =0;x< result.length;x++){
+                cr = result[x].vote
+                for(var y =0;y < cr.length;y++){
+                    let ind = parseInt(cr.charAt(y)+"") - 1
+
+                    switch (y) {
+                        case 0:
+                            hboy[ind] = hboy[ind] + 1
+
+                            break;
+                        case 1:
+                            hgirl[ind] = hgirl[ind] + 1
+                            break;
+                        case 2:
+                            vhboy[ind] = vhboy[ind] + 1
+                            break;
+                        case 3:
+                            vhgirl[ind] = vhgirl[ind] + 1
+                            break;
+                    }
+                }
+            }
+            res.send({'b':hboy,'g':hgirl,'vb':vhboy,'vg':vhgirl})
+    });
+})
 app.listen(80,'0.0.0.0')
