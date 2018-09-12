@@ -39,7 +39,7 @@
 <div layout="row" layout-fill style="height: 100%;" layout-align="center center" ng-controller="homeC as hc">
 
     <div  layout-align="center center" layout-padding flex="60" >
-        <form layout="column" action="../pushVote" method="post">
+        <form layout="column" action="../pushVote" method="post" ng-submit="myFunc($event)">
             <h1>Hello</h1>
             <h5 style="margin-top: -20px;color: #73767d;">Choose Your Candidate!</h5>
             <div layout="column" ng-repeat="post in hc.candiates">
@@ -84,11 +84,25 @@
     /**
      * You must include the dependency on 'ngMaterial'
      */
-    angular.module('App', ['ngMaterial', 'ngMessages']).controller('homeC', function() {
+    angular.module('App', ['ngMaterial', 'ngMessages']).controller('homeC', function ($scope) {
         var hc = this;
-        cms = window.location.pathname.split('/')
-        cms = cms[2]
+        cms = window.location.pathname.split('/');
+        cms = cms[2];
         hc.id = cms;
+        $scope.myFunc = function ($event) {
+            var tm = true;
+            for (var i = 0; i < hc.candiates.length; i++) {
+
+                if (hc.candiates[i].cr === 0)
+                    tm = false;
+            }
+            if (!tm) {
+                $event.preventDefault();
+                alert("You Must Vote For All Candiates!");
+                return true;
+            }
+            return true;
+        };
         hc.candiates = [
             {
                 'post':'Head Boy',cr : 0,members : [

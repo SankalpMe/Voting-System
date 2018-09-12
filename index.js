@@ -1,6 +1,6 @@
 const csv = require('csvtojson');
 var bodyParser = require('body-parser');
-const rh = require('./reshandler');
+//const rh = require('./reshandler');
 const path = require('path');
 var mysql = require('mysql');
 var cookieParser = require('cookie-parser');
@@ -18,7 +18,8 @@ con.connect(function(err) {
 
     console.log("Connected!");
 });
-rh.reset();
+
+//rh.reset();
 function loadCSV(loc,callback) {
     dnd = false;
     table = [];
